@@ -1,18 +1,18 @@
 const PostModel = require('./post')
 
-const createPost = async({title, description, userId, keywords, salary, active=true}) => {
+const createPost = async({title, description, userId, keywords, requirements, locations, categories, salary, active=true}) => {
 
-    const post = await PostModel.create({title, description, owner:userId, keywords, salary, active})
+    const post = await PostModel.create({title, description, owner:userId, keywords, requirements, locations, categories, salary, active})
  
     return post
 
 }
 
-const getPosts = async ({page,limit,keyword,maxSalary,minSalary,companyId}) => {
+const getPosts = async ({page,limit,keyword,maxSalary,minSalary,companyId,category,location}) => {
 
     const offset = (page-1)*limit
 
-    const query = {active:true}
+    const query = {}
 
     if(keyword){
 
@@ -32,7 +32,19 @@ const getPosts = async ({page,limit,keyword,maxSalary,minSalary,companyId}) => {
 
     }
 
-    const posts = await PostModel.find(query).skip(offset).limit(limit).sort({createdAt:-1}).populate('owner','email')
+    if(category){
+
+        query.categories = {$all: category}
+
+    }
+
+    if(location){
+
+        query.locations = {$all: location}
+
+    }
+
+    const posts = await PostModel.find(query).skip(offset).limit(limit).sort({createdAt:-1}).populate({path:'owner',select:'name email logo'})
 
     const total = await PostModel.find(query).countDocuments()
 
@@ -42,12 +54,12 @@ const getPosts = async ({page,limit,keyword,maxSalary,minSalary,companyId}) => {
 
 const getAPost = async(postId) => {
 
-    const post = await PostModel.findById(postId)
+    const post = await PostModel.findById(postId).populate({path:'owner',select:'name logo'})
 
     if(!post) throw new Error('Post is not found')
 
     return post 
-
+ 
 }
 
 const getDetailPost = async(postId,userId) => {
@@ -63,7 +75,7 @@ const getDetailPost = async(postId,userId) => {
 
         const doc = application._doc
 
-        const {job,owner,createdAt,updatedAt,...returnData} = doc
+        const {job,owner,updatedAt,...returnData} = doc
 
         return returnData
     })
@@ -76,7 +88,7 @@ const updatePost = async(postId, userId, updates) => {
 
     const fields = Object.keys(updates)
 
-    if(!isValidUpdate(fields, ['active', 'salary', 'description','keywords'])){
+    if(!isValidUpdate(fields, ['active', 'salary', 'description','requriements', 'keywords','createdAt'])){
  
         throw new Error('Update is invalid')
     
@@ -109,6 +121,6 @@ const isValidUpdate = (updates, allowedUpdate) => {
     return updates.every(update => allowedUpdate.includes(update))
 
 }
-
+ 
 
 module.exports = {createPost, getAPost, getPosts, getDetailPost,updatePost, deletePost}

@@ -44,11 +44,11 @@ EmployeeRouter.get('/verify', EmployeeAuth, (req,res) => {
 
     try {
 
-        res.status(200).send({success:1})
+        res.status(200).send({success:1, data:req.user})
         
     } catch (e) {
         
-        res.status(401).send({success:0})
+        res.status(401).send({success:0, message:e.message})
 
     }
 

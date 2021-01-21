@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const deepPopulate = require('mongoose-deep-populate')(mongoose)
 
 const ApplicationSchema = new mongoose.Schema({
     owner: {
@@ -21,10 +22,12 @@ const ApplicationSchema = new mongoose.Schema({
     },
     active:{
         requried:true,
-        type:Boolean
+        type:String
     }
 },{
     timestamps:true
 })
+
+ApplicationSchema.plugin(deepPopulate)
 
 module.exports = mongoose.model('Application', ApplicationSchema)

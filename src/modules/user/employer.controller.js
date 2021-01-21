@@ -1,6 +1,7 @@
 const EmployerModel = require('./employer')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const SendMail = require('../utils/sendEmail')
 
 const genToken = (userId) => {
 
@@ -36,6 +37,8 @@ const createUser = async ({email, password}) => {
     
     const user = await EmployerModel.create({email, password: hashPassword})
 
+    SendMail.sendWelcomeEmail(user.email)
+
     const token = genToken(user._id)
 
     return {user,token}
@@ -60,7 +63,7 @@ const updateProfile = async({id,updates}) => {
 
     const fields = Object.keys(updates)
 
-    if(!isValidUpdate(fields, ['name','image'])){
+    if(!isValidUpdate(fields, ['name','image','description','location','logo'])){
  
         throw new Error('Update is invalid')
     

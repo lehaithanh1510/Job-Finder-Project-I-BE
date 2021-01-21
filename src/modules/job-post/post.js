@@ -19,14 +19,23 @@ const PostSchema = new mongoose.Schema({
         required:true,
         type:String
     },
+    requirements:{
+        required:true,
+        type:String
+    },
     keywords:{
         type:[String]
     },
     salary:{
         required:true,
         type:Number
+    },
+    locations:{
+        type:[String]
+    },
+    categories:{
+        type:[String]
     }
-    
 },{
     timestamps:true,
     toJSON: {virtuals: true},

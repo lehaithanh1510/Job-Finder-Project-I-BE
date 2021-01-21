@@ -16,7 +16,7 @@ ApplicationRouter.post('/', EmployeeAuth, async(req,res) => {
 
         res.status(201).send({success:1, data: application})
 
-        
+         
     } catch (e) {
         
         res.status(400).send({success:0, message: e.message})
@@ -54,7 +54,7 @@ ApplicationRouter.get('/', EmployeeAuth, async(req,res) => {
 ApplicationRouter.patch('/:id', EmployerAuth, async(req,res) => {
 
     try {
-
+ 
         const {id} = req.params
 
         const userId = req.user._id
@@ -63,7 +63,7 @@ ApplicationRouter.patch('/:id', EmployerAuth, async(req,res) => {
 
         const application = await ApplicationController.updateApplication({id,userId,updates})
 
-        res.status(200).send({success:0, data:application})
+        res.status(200).send({success:1, data:application})
         
     } catch (e) {
         

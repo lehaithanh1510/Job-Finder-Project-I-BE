@@ -11,11 +11,20 @@ const EmployerSchema = new mongoose.Schema({
         type:String,
         trim:true
     },
-    name:{
+    name:{ 
+        type:String
+    },
+    description:{
         type:String
     },
     image:{
         type:[String]
+    },
+    location:{
+        type:[String]
+    },
+    logo:{
+        type:String
     }
 },{
     timestamps: true

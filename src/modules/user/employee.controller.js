@@ -1,6 +1,7 @@
 const EmployeeModel = require('./employee')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const SendMail = require('../utils/sendEmail')
 
 const genToken = (userId) => {
 
@@ -35,6 +36,8 @@ const createUser = async ({email, password}) => {
     const hashPassword = bcrypt.hashSync(password, salt)
     
     const user = await EmployeeModel.create({email, password: hashPassword})
+
+    SendMail.sendWelcomeEmail(user.email)
 
     const token = genToken(user._id)
 

@@ -7,7 +7,7 @@ ResumeRouter.post('/', EmployeeAuth, async(req,res) => {
 
     try {
        
-        const {title, link} = req.body 
+        const {title, link} = req.body  
 
         const userId = req.user._id
 
@@ -104,10 +104,10 @@ ResumeRouter.delete('/:id', EmployeeAuth, async(req,res) => {
 
         const resume = await ResumeController.deleteResume({id,userId})
 
-        res.status(200).send({success:0, data: resume})
+        res.status(200).send({success:1, data: resume})
 
     } catch (e) {
-        
+         
         res.status(500).send({success:0, message: e.message})
 
     }

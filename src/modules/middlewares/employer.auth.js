@@ -21,7 +21,7 @@ const EmployerAuth = async (req,res,next) => {
 
     } catch (e) {
         
-        return res.status(401).send({success:0, message: e.message})
+        return res.status(400).send({success:0, message: e.message})
 
     }
 

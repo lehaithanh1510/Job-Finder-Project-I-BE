@@ -7,11 +7,11 @@ PostRouter.post('/', EmployerAuth, async(req,res) => {
 
     try {
         
-        const {title, description, keywords, salary} = req.body
+        const {title, description, keywords, requirements, locations, categories, salary} = req.body
 
         const userId = req.user._id
 
-        const newPost = await PostController.createPost({title, description, userId, keywords, salary})
+        const newPost = await PostController.createPost({title, description, userId, keywords, requirements, locations, categories, salary})
 
         res.status(201).send({success:1, data:newPost})
 
@@ -67,9 +67,9 @@ PostRouter.get('/', async(req,res) => {
 
     try {
 
-        const {page, limit, key, max, min, company} = req.query
+        const {page, limit, key, max, min, company, cate, loc} = req.query
 
-        const keyword = key ? key.split(' ') : undefined
+        const keyword = key ? key.split(' ').map(wrd => wrd.toLowerCase()) : undefined
 
         const pageNumber = page ? Number(page) : 1
 
@@ -81,7 +81,11 @@ PostRouter.get('/', async(req,res) => {
 
         const companyId = company ? company : undefined
 
-        const result = await PostController.getPosts({page:pageNumber, limit:limitNumber, keyword, maxSalary, minSalary,companyId})
+        const category = cate ? cate : undefined
+
+        const location = loc ? loc : undefined
+
+        const result = await PostController.getPosts({page:pageNumber, limit:limitNumber, keyword, maxSalary, minSalary,companyId, category, location})
 
         res.status(200).send({success:1, data:result})
         
