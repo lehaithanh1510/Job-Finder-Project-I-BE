@@ -24,6 +24,10 @@ app.use('/api/post', PostRouter)
 app.use('/api/resume', ResumeRouter)
 app.use('/api/application', ApplicationRouter)
 
+app.get('/ping', (req,res) => {
+    res.send('pong')
+})
+
 const server = require('http').createServer(app)
 const options = {
     cors: {
