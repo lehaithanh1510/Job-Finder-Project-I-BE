@@ -8,7 +8,6 @@ const createApplication = async({job,resume,owner,message,active='pending'}) => 
     const application = await ApplicationModel.create({job,resume,owner,message,active})
 
     return application
-
 }
  
 const getApplications = async({page,limit,userId}) => {
@@ -20,8 +19,6 @@ const getApplications = async({page,limit,userId}) => {
     const total = await ApplicationModel.find({owner:userId}).countDocuments()
 
     return {applications,total}
-    
-
 } 
 
 const updateApplication = async({id,userId,updates}) => {
@@ -70,7 +67,6 @@ const updateApplication = async({id,userId,updates}) => {
 const isValidUpdate = (updates, allowedUpdate) => {
 
     return updates.every(update => allowedUpdate.includes(update))
-
 }
 
 module.exports = {createApplication, getApplications, updateApplication}
